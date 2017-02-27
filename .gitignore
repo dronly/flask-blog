@@ -92,3 +92,8 @@ ENV/
 # PyCharm
 
 .idea
+
+
+# Databases
+
+*.sqlite
