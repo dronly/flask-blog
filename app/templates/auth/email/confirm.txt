@@ -1,0 +1,13 @@
+Dear {{ user.username }}
+
+Weclome to Blog-Flask!
+
+To confirm your account please click to following link:
+
+{{ url_for('auth.confirm', token=token, _external=True) }}
+
+Sincerely,
+
+The Blog-Flask Team
+
+Note: replies to this email address are not monitored.
