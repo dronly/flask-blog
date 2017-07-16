@@ -13,7 +13,6 @@ class UserModelTestCase(unittest.TestCase):
         db.create_all()
         Role.insert_roles()
 
-
     def tearDown(self):
         db.session.remove()
         db.drop_all()
