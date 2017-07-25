@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-
+import hashlib
 from datetime import datetime
+
+from flask import request
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
@@ -145,6 +147,16 @@ class User(UserMixin, db.Model):
         '''记录最后一次登录'''
         self.last_seen = datetime.utcnow()
         db.session.add(self)
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        # 根据邮件生成头像链接
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        hash = hashlib.md5(self.email).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)
 
     def __repr__(self):
         return '<User %r>' % self.username

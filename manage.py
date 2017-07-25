@@ -14,7 +14,7 @@ def make_shell_context():
     return dict(app=app, db=db, User=User, Role=Role, Permission=Permission)
 
 
-manager.add_command('Shell', Shell(make_context=make_shell_context))
+manager.add_command('shell', Shell(make_context=make_shell_context))
 manager.add_command('db', MigrateCommand)
 
 

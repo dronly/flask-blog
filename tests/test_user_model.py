@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import unittest
 import time
 from app import create_app, db
@@ -108,3 +109,22 @@ class UserModelTestCase(unittest.TestCase):
     def test_anonymous_user(self):
         u = AnonymousUser()
         self.assertFalse(u.can(Permission.FOLLOW))
+
+    def test_gravatar(self):
+        # 测试头像链接生成函数
+        u = User(email='dronly@example.com')
+        with self.app.test_request_context('/'):
+            gravatar = u.gravatar()
+            gravatar_size = u.gravatar(size=256)
+            gravatar_pg = u.gravatar(rating='pg')
+            gravatar_retro = u.gravatar(default='retro')
+        with self.app.test_request_context('/', base_url='https://example.com'):
+            gravatar_ssl = u.gravatar()
+        self.assertIn("http://www.gravatar.com/avatar/" +
+                      "f59a5c7a91436fdcf6a2c9cae4472dbb", gravatar)
+        self.assertIn("s=256", gravatar_size)
+        self.assertIn("r=pg", gravatar_pg)
+        self.assertIn("d=retro", gravatar_retro)
+        self.assertIn("https://secure.gravatar.com/avatar/" +
+                      "f59a5c7a91436fdcf6a2c9cae4472dbb", gravatar_ssl)
+
